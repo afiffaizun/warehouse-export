@@ -1,0 +1,1 @@
+import{_ as s,o,c as a,b as e}from"./index-DfTNm86M.js";const c={},r={class:"p-6"};function n(l,t){return o(),a("div",r,[...t[0]||(t[0]=[e("h1",{class:"text-2xl font-display font-bold mb-4"},"Overview Stok",-1),e("div",{class:"card p-6"},[e("p",{class:"text-text-secondary"},"Stok overview will be implemented in Phase 9")],-1)])])}const d=s(c,[["render",n]]);export{d as default};
