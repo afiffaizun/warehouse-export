@@ -171,7 +171,7 @@ Viewer          Dashboard saja                 Pantau ringkasan data
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 5.1 Konsep Visual
-  Gaya       : Web3 Clean — Dark Mode, Glassmorphism, Neon Accents
+  Gaya       : Web3 Clean — Light Mode, Glassmorphism, Neon Accents
   Inspirasi  : Dashboard DeFi / Crypto Exchange tapi lebih formal
                dan profesional untuk konteks ekspor B2B
 

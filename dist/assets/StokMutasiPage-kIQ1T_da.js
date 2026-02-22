@@ -1,0 +1,1 @@
+import{_ as s,a,b as t,o}from"./index-1AL5KJS7.js";const c={},n={class:"p-6"};function i(l,e){return o(),a("div",n,[...e[0]||(e[0]=[t("h1",{class:"text-2xl font-display font-bold mb-4"},"Riwayat Mutasi Stok",-1),t("div",{class:"card p-6"},[t("p",{class:"text-text-secondary"},"Stok mutasi will be implemented in Phase 9")],-1)])])}const d=s(c,[["render",i]]);export{d as default};

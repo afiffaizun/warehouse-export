@@ -1,1 +1,0 @@
-import{_ as s,o as t,c as o,b as e}from"./index-DfTNm86M.js";const r={},n={class:"p-6"};function c(l,a){return t(),o("div",n,[...a[0]||(a[0]=[e("h1",{class:"text-2xl font-display font-bold mb-4"},"Form Barang",-1),e("div",{class:"card p-6"},[e("p",{class:"text-text-secondary"},"Barang form will be implemented in Phase 8")],-1)])])}const i=s(r,[["render",c]]);export{i as default};
