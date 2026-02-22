@@ -1,1 +1,0 @@
-import{_ as s,a as t,b as e,o}from"./index-1AL5KJS7.js";const r={},n={class:"p-6"};function c(l,a){return o(),t("div",n,[...a[0]||(a[0]=[e("h1",{class:"text-2xl font-display font-bold mb-4"},"Form Barang",-1),e("div",{class:"card p-6"},[e("p",{class:"text-text-secondary"},"Barang form will be implemented in Phase 8")],-1)])])}const i=s(r,[["render",c]]);export{i as default};
