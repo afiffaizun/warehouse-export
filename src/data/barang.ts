@@ -28,6 +28,12 @@ export const units = [
   'UNIT'
 ]
 
+export const warehouses = [
+  { id: 1, code: 'GUD-JKT', name: 'Gudang Jakarta', location: 'Jakarta Utara' },
+  { id: 2, code: 'GUD-SUB', name: 'Gudang Surabaya', location: 'Surabaya' },
+  { id: 3, code: 'GUD-TNG', name: 'Gudang Tangeran', location: 'Tangerang' }
+]
+
 export const mockProducts: Product[] = [
   {
     id: 1,
