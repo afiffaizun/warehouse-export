@@ -1,0 +1,1 @@
+import{_ as s,a as t,b as e,o as n}from"./index-CVldBSkh.js";const o={},r={class:"p-6"};function c(l,a){return n(),t("div",r,[...a[0]||(a[0]=[e("h1",{class:"text-2xl font-display font-bold mb-4"},"Pembayaran",-1),e("div",{class:"card p-6"},[e("p",{class:"text-text-secondary"},"Pembayaran will be implemented in Phase 13")],-1)])])}const i=s(o,[["render",c]]);export{i as default};

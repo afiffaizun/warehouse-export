@@ -1,0 +1,215 @@
+import type { Buyer, BuyerSegment } from '@/types/pelanggan'
+
+export const countries = [
+  { code: 'US', name: 'United States' },
+  { code: 'SG', name: 'Singapore' },
+  { code: 'MY', name: 'Malaysia' },
+  { code: 'TH', name: 'Thailand' },
+  { code: 'JP', name: 'Japan' },
+  { code: 'KR', name: 'South Korea' },
+  { code: 'CN', name: 'China' },
+  { code: 'AU', name: 'Australia' },
+  { code: 'NZ', name: 'New Zealand' },
+  { code: 'AE', name: 'United Arab Emirates' },
+  { code: 'DE', name: 'Germany' },
+  { code: 'UK', name: 'United Kingdom' },
+  { code: 'NL', name: 'Netherlands' }
+]
+
+export const segments: { value: BuyerSegment; label: string; color: string }[] = [
+  { value: 'vip', label: 'VIP', color: 'amber' },
+  { value: 'regular', label: 'Regular', color: 'cyan' },
+  { value: 'new', label: 'New', color: 'emerald' }
+]
+
+export const paymentTerms = [
+  { value: 'dp_30', label: 'DP 30% - Pelunasan 70%' },
+  { value: 'dp_50', label: 'DP 50% - Pelunasan 50%' },
+  { value: 'full_advance', label: 'Full Payment Advance' },
+  { value: 'net_30', label: 'Net 30 Days' },
+  { value: 'net_60', label: 'Net 60 Days' },
+  { value: 'lc', label: 'Letter of Credit (L/C)' }
+]
+
+export const mockBuyers: Buyer[] = [
+  {
+    id: 1,
+    companyName: 'ABC Corporation',
+    address: '123 Business Avenue, Suite 500',
+    country: 'United States',
+    city: 'New York',
+    postalCode: '10001',
+    contactPerson: 'John Smith',
+    email: 'john@abccorp.com',
+    phone: '+1 212-555-0100',
+    website: 'https://www.abccorp.com',
+    segment: 'vip',
+    status: 'aktif',
+    creditLimit: 500000,
+    paymentTerms: 'net_30',
+    npwp: '12.345.678.9-012.000',
+    totalOrders: 45,
+    totalSpent: 1250000,
+    documents: [],
+    createdAt: '2023-06-15T10:00:00Z',
+    updatedAt: '2024-01-20T10:00:00Z'
+  },
+  {
+    id: 2,
+    companyName: 'Global Trading Pte Ltd',
+    address: '88 Market Street, Level 25',
+    country: 'Singapore',
+    city: 'Singapore',
+    postalCode: '048948',
+    contactPerson: 'Mary Tan',
+    email: 'mary.tan@globaltrading.sg',
+    phone: '+65 6789-0123',
+    website: 'https://www.globaltrading.sg',
+    segment: 'vip',
+    status: 'aktif',
+    creditLimit: 750000,
+    paymentTerms: 'net_30',
+    npwp: '202012345K',
+    totalOrders: 62,
+    totalSpent: 2100000,
+    documents: [],
+    createdAt: '2023-03-10T10:00:00Z',
+    updatedAt: '2024-02-15T10:00:00Z'
+  },
+  {
+    id: 3,
+    companyName: 'Tokyo Imports Co',
+    address: '1-1-1 Marunouchi, Chiyoda-ku',
+    country: 'Japan',
+    city: 'Tokyo',
+    postalCode: '100-0005',
+    contactPerson: 'Yuki Yamamoto',
+    email: 'y.yamamoto@tokyoimports.jp',
+    phone: '+81 3-1234-5678',
+    website: 'https://www.tokyoimports.co.jp',
+    segment: 'regular',
+    status: 'aktif',
+    creditLimit: 300000,
+    paymentTerms: 'dp_50',
+    totalOrders: 28,
+    totalSpent: 680000,
+    documents: [],
+    createdAt: '2023-08-20T10:00:00Z',
+    updatedAt: '2024-01-10T10:00:00Z'
+  },
+  {
+    id: 4,
+    companyName: 'Seoul Distributors Inc',
+    address: '456 Gangnam-daero, Gangnam-gu',
+    country: 'South Korea',
+    city: 'Seoul',
+    postalCode: '06164',
+    contactPerson: 'Kim Min-jun',
+    email: 'minjun@seouldist.kr',
+    phone: '+82 2 1234 5678',
+    segment: 'regular',
+    status: 'aktif',
+    creditLimit: 250000,
+    paymentTerms: 'net_30',
+    totalOrders: 18,
+    totalSpent: 420000,
+    documents: [],
+    createdAt: '2023-11-05T10:00:00Z',
+    updatedAt: '2024-02-01T10:00:00Z'
+  },
+  {
+    id: 5,
+    companyName: 'Sydney Merchants Pty',
+    address: '100 George Street, CBD',
+    country: 'Australia',
+    city: 'Sydney',
+    postalCode: '2000',
+    contactPerson: 'David Wilson',
+    email: 'd.wilson@sydneymerchants.com.au',
+    phone: '+61 2 9876 5432',
+    segment: 'new',
+    status: 'aktif',
+    creditLimit: 100000,
+    paymentTerms: 'full_advance',
+    totalOrders: 5,
+    totalSpent: 85000,
+    documents: [],
+    createdAt: '2024-01-15T10:00:00Z',
+    updatedAt: '2024-01-15T10:00:00Z'
+  },
+  {
+    id: 6,
+    companyName: 'Kuala Lumpur Trading Co',
+    address: 'Jalan Bukit Bintang, No. 88',
+    country: 'Malaysia',
+    city: 'Kuala Lumpur',
+    postalCode: '55100',
+    contactPerson: 'Ahmad bin Abdullah',
+    email: 'ahmad@kltrading.my',
+    phone: '+60 3 2144 5678',
+    segment: 'regular',
+    status: 'nonaktif',
+    creditLimit: 150000,
+    paymentTerms: 'net_30',
+    totalOrders: 12,
+    totalSpent: 180000,
+    documents: [],
+    createdAt: '2023-07-01T10:00:00Z',
+    updatedAt: '2024-01-05T10:00:00Z'
+  },
+  {
+    id: 7,
+    companyName: 'Bangkok Export House',
+    address: '789 Sukhumvit Road, Wattana',
+    country: 'Thailand',
+    city: 'Bangkok',
+    postalCode: '10110',
+    contactPerson: 'Somchai Prasert',
+    email: 'somchai@bkkexport.th',
+    phone: '+66 2 123 4567',
+    segment: 'new',
+    status: 'aktif',
+    creditLimit: 75000,
+    paymentTerms: 'dp_30',
+    totalOrders: 3,
+    totalSpent: 45000,
+    documents: [],
+    createdAt: '2024-02-01T10:00:00Z',
+    updatedAt: '2024-02-01T10:00:00Z'
+  },
+  {
+    id: 8,
+    companyName: 'Dubai Commodities LLC',
+    address: 'Sheikh Zayed Road, Trade Center',
+    country: 'United Arab Emirates',
+    city: 'Dubai',
+    postalCode: '12345',
+    contactPerson: 'Ahmed Al-Rashid',
+    email: 'ahmed.rashid@dubaicommodities.ae',
+    phone: '+971 4 123 4567',
+    website: 'https://www.dubaicommodities.ae',
+    segment: 'vip',
+    status: 'aktif',
+    creditLimit: 1000000,
+    paymentTerms: 'lc',
+    totalOrders: 35,
+    totalSpent: 3200000,
+    documents: [],
+    createdAt: '2023-04-20T10:00:00Z',
+    updatedAt: '2024-02-10T10:00:00Z'
+  }
+]
+
+export const getBuyerById = (id: number): Buyer | undefined => {
+  return mockBuyers.find(b => b.id === id)
+}
+
+export const getSegmentInfo = (segment: BuyerSegment) => {
+  const found = segments.find(s => s.value === segment)
+  return found || { value: segment, label: segment, color: 'gray' }
+}
+
+export const getCountryName = (countryCode: string): string => {
+  const found = countries.find(c => c.code === countryCode)
+  return found ? found.name : countryCode
+}
