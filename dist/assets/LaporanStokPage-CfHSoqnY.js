@@ -1,1 +1,0 @@
-import{_ as a,a as s,b as e,o}from"./index-CVldBSkh.js";const n={},r={class:"p-6"};function c(l,t){return o(),s("div",r,[...t[0]||(t[0]=[e("h1",{class:"text-2xl font-display font-bold mb-4"},"Laporan Stok",-1),e("div",{class:"card p-6"},[e("p",{class:"text-text-secondary"},"Laporan stok will be implemented in Phase 14")],-1)])])}const p=a(n,[["render",c]]);export{p as default};

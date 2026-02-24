@@ -1,0 +1,236 @@
+import type { Order, OrderStatus, PaymentStatus, Incoterms, OrderItem } from '@/types/order'
+
+export const incotermsList: { value: Incoterms; label: string }[] = [
+  { value: 'fob', label: 'FOB (Free On Board)' },
+  { value: 'cif', label: 'CIF (Cost, Insurance, Freight)' },
+  { value: 'exw', label: 'EXW (Ex Works)' },
+  { value: 'dap', label: 'DAP (Delivered at Place)' },
+  { value: 'ddp', label: 'DDP (Delivered Duty Paid)' },
+  { value: 'cfr', label: 'CFR (Cost and Freight)' }
+]
+
+export const statusOptions: { value: OrderStatus; label: string; color: string }[] = [
+  { value: 'draft', label: 'Draft', color: 'gray' },
+  { value: 'confirmed', label: 'Confirmed', color: 'cyan' },
+  { value: 'packing', label: 'Packing', color: 'amber' },
+  { value: 'shipped', label: 'Shipped', color: 'violet' },
+  { value: 'delivered', label: 'Delivered', color: 'blue' },
+  { value: 'completed', label: 'Completed', color: 'emerald' },
+  { value: 'cancelled', label: 'Cancelled', color: 'red' }
+]
+
+export const paymentStatusOptions: { value: PaymentStatus; label: string; color: string }[] = [
+  { value: 'unpaid', label: 'Unpaid', color: 'red' },
+  { value: 'partial', label: 'Partial', color: 'amber' },
+  { value: 'paid', label: 'Paid', color: 'emerald' }
+]
+
+const createOrderItems = (items: Partial<OrderItem>[]): OrderItem[] => {
+  return items.map((item, index) => ({
+    id: index + 1,
+    productId: item.productId || 1,
+    productName: item.productName || 'Product',
+    productSku: item.productSku || 'SKU-001',
+    quantity: item.quantity || 1,
+    unit: item.unit || 'PCS',
+    priceUsd: item.priceUsd || 100,
+    totalUsd: item.totalUsd || 100
+  }))
+}
+
+export const mockOrders: Order[] = [
+  {
+    id: 1,
+    orderNumber: 'SO-2024-001',
+    buyerId: 1,
+    buyerName: 'ABC Corporation',
+    buyerCountry: 'United States',
+    items: createOrderItems([
+      { productId: 1, productName: 'Batik Premium Motif Parang', productSku: 'BAT-PAR-001', quantity: 50, unit: 'PCS', priceUsd: 55, totalUsd: 2750 },
+      { productId: 2, productName: 'Kopi Luwak Grade A', productSku: 'KOP-LUW-001', quantity: 20, unit: 'KG', priceUsd: 29, totalUsd: 580 }
+    ]),
+    subtotalUsd: 3330,
+    shippingCostUsd: 500,
+    taxUsd: 333,
+    totalUsd: 4163,
+    incoterms: 'fob',
+    status: 'completed',
+    paymentStatus: 'paid',
+    notes: 'Export to New York warehouse',
+    createdAt: '2024-01-15T10:00:00Z',
+    updatedAt: '2024-02-10T10:00:00Z',
+    confirmedAt: '2024-01-16T10:00:00Z',
+    shippedAt: '2024-01-25T10:00:00Z',
+    deliveredAt: '2024-02-05T10:00:00Z'
+  },
+  {
+    id: 2,
+    orderNumber: 'SO-2024-002',
+    buyerId: 2,
+    buyerName: 'Global Trading Pte Ltd',
+    buyerCountry: 'Singapore',
+    items: createOrderItems([
+      { productId: 3, productName: 'Palm Oil CPO Grade A', productSku: 'PAL-CPO-001', quantity: 100, unit: 'TON', priceUsd: 920, totalUsd: 92000 }
+    ]),
+    subtotalUsd: 92000,
+    shippingCostUsd: 2500,
+    taxUsd: 9450,
+    totalUsd: 103950,
+    incoterms: 'cif',
+    status: 'shipped',
+    paymentStatus: 'paid',
+    notes: 'Urgent shipment for Q1 demand',
+    createdAt: '2024-02-01T10:00:00Z',
+    updatedAt: '2024-02-15T10:00:00Z',
+    confirmedAt: '2024-02-02T10:00:00Z',
+    shippedAt: '2024-02-15T10:00:00Z'
+  },
+  {
+    id: 3,
+    orderNumber: 'SO-2024-003',
+    buyerId: 3,
+    buyerName: 'Tokyo Imports Co',
+    buyerCountry: 'Japan',
+    items: createOrderItems([
+      { productId: 6, productName: 'Batik Mega Mendung', productSku: 'BAT-MEG-001', quantity: 30, unit: 'PCS', priceUsd: 76, totalUsd: 2280 },
+      { productId: 1, productName: 'Batik Premium Motif Parang', productSku: 'BAT-PAR-001', quantity: 20, unit: 'PCS', priceUsd: 55, totalUsd: 1100 }
+    ]),
+    subtotalUsd: 3380,
+    shippingCostUsd: 400,
+    taxUsd: 378,
+    totalUsd: 4158,
+    incoterms: 'fob',
+    status: 'packing',
+    paymentStatus: 'partial',
+    notes: 'Partial payment received - 50%',
+    createdAt: '2024-02-10T10:00:00Z',
+    updatedAt: '2024-02-18T10:00:00Z',
+    confirmedAt: '2024-02-11T10:00:00Z'
+  },
+  {
+    id: 4,
+    orderNumber: 'SO-2024-004',
+    buyerId: 4,
+    buyerName: 'Seoul Distributors Inc',
+    buyerCountry: 'South Korea',
+    items: createOrderItems([
+      { productId: 4, productName: 'Rubber Sheet RSS-3', productSku: 'RUB-RSS-001', quantity: 500, unit: 'KG', priceUsd: 1.8, totalUsd: 900 },
+      { productId: 5, productName: 'Lada Hitam Muntok', productSku: 'REM-LAD-001', quantity: 100, unit: 'KG', priceUsd: 8, totalUsd: 800 }
+    ]),
+    subtotalUsd: 1700,
+    shippingCostUsd: 200,
+    taxUsd: 190,
+    totalUsd: 2090,
+    incoterms: 'dap',
+    status: 'confirmed',
+    paymentStatus: 'unpaid',
+    notes: 'Waiting for payment confirmation',
+    createdAt: '2024-02-15T10:00:00Z',
+    updatedAt: '2024-02-16T10:00:00Z',
+    confirmedAt: '2024-02-16T10:00:00Z'
+  },
+  {
+    id: 5,
+    orderNumber: 'SO-2024-005',
+    buyerId: 8,
+    buyerName: 'Dubai Commodities LLC',
+    buyerCountry: 'United Arab Emirates',
+    items: createOrderItems([
+      { productId: 8, productName: 'VCO (Virgin Coconut Oil)', productSku: 'MIN-VCO-001', quantity: 200, unit: 'LITER', priceUsd: 12, totalUsd: 2400 }
+    ]),
+    subtotalUsd: 2400,
+    shippingCostUsd: 350,
+    taxUsd: 275,
+    totalUsd: 3025,
+    incoterms: 'ddp',
+    status: 'draft',
+    paymentStatus: 'unpaid',
+    notes: 'New order - awaiting confirmation',
+    createdAt: '2024-02-18T10:00:00Z',
+    updatedAt: '2024-02-18T10:00:00Z'
+  },
+  {
+    id: 6,
+    orderNumber: 'SO-2024-006',
+    buyerId: 5,
+    buyerName: 'Sydney Merchants Pty',
+    buyerCountry: 'Australia',
+    items: createOrderItems([
+      { productId: 10, productName: 'Keris Akik Puyang', productSku: 'KER-AKI-001', quantity: 5, unit: 'PCS', priceUsd: 950, totalUsd: 4750 }
+    ]),
+    subtotalUsd: 4750,
+    shippingCostUsd: 150,
+    taxUsd: 490,
+    totalUsd: 5390,
+    incoterms: 'fob',
+    status: 'delivered',
+    paymentStatus: 'paid',
+    notes: 'Special item - fragile handling required',
+    createdAt: '2024-01-20T10:00:00Z',
+    updatedAt: '2024-02-12T10:00:00Z',
+    confirmedAt: '2024-01-21T10:00:00Z',
+    shippedAt: '2024-01-28T10:00:00Z',
+    deliveredAt: '2024-02-10T10:00:00Z'
+  },
+  {
+    id: 7,
+    orderNumber: 'SO-2024-007',
+    buyerId: 7,
+    buyerName: 'Bangkok Export House',
+    buyerCountry: 'Thailand',
+    items: createOrderItems([
+      { productId: 2, productName: 'Kopi Luwak Grade A', productSku: 'KOP-LUW-001', quantity: 50, unit: 'KG', priceUsd: 29, totalUsd: 1450 }
+    ]),
+    subtotalUsd: 1450,
+    shippingCostUsd: 100,
+    taxUsd: 155,
+    totalUsd: 1705,
+    incoterms: 'exw',
+    status: 'cancelled',
+    paymentStatus: 'unpaid',
+    notes: 'Cancelled by buyer',
+    createdAt: '2024-02-05T10:00:00Z',
+    updatedAt: '2024-02-08T10:00:00Z'
+  },
+  {
+    id: 8,
+    orderNumber: 'SO-2024-008',
+    buyerId: 1,
+    buyerName: 'ABC Corporation',
+    buyerCountry: 'United States',
+    items: createOrderItems([
+      { productId: 1, productName: 'Batik Premium Motif Parang', productSku: 'BAT-PAR-001', quantity: 100, unit: 'PCS', priceUsd: 55, totalUsd: 5500 },
+      { productId: 6, productName: 'Batik Mega Mendung', productSku: 'BAT-MEG-001', quantity: 50, unit: 'PCS', priceUsd: 76, totalUsd: 3800 }
+    ]),
+    subtotalUsd: 9300,
+    shippingCostUsd: 800,
+    taxUsd: 1010,
+    totalUsd: 11110,
+    incoterms: 'cif',
+    status: 'confirmed',
+    paymentStatus: 'partial',
+    notes: 'Repeat order from VIP customer',
+    createdAt: '2024-02-17T10:00:00Z',
+    updatedAt: '2024-02-18T10:00:00Z',
+    confirmedAt: '2024-02-18T10:00:00Z'
+  }
+]
+
+export const getOrderById = (id: number): Order | undefined => {
+  return mockOrders.find(o => o.id === id)
+}
+
+export const getStatusInfo = (status: OrderStatus) => {
+  const found = statusOptions.find(s => s.value === status)
+  return found || { value: status, label: status, color: 'gray' }
+}
+
+export const getPaymentStatusInfo = (status: PaymentStatus) => {
+  const found = paymentStatusOptions.find(s => s.value === status)
+  return found || { value: status, label: status, color: 'gray' }
+}
+
+export const getIncotermsLabel = (incoterms: Incoterms): string => {
+  const found = incotermsList.find(i => i.value === incoterms)
+  return found ? found.label : incoterms
+}

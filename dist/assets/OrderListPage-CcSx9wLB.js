@@ -1,1 +1,0 @@
-import{_ as t,a,b as e,o as r}from"./index-CVldBSkh.js";const o={},c={class:"p-6"};function n(d,s){return r(),a("div",c,[...s[0]||(s[0]=[e("h1",{class:"text-2xl font-display font-bold mb-4"},"Daftar Order",-1),e("div",{class:"card p-6"},[e("p",{class:"text-text-secondary"},"Order list will be implemented in Phase 11")],-1)])])}const i=t(o,[["render",n]]);export{i as default};
