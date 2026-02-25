@@ -1,1 +1,0 @@
-import{_ as t,a,b as e,o}from"./index-PsAw_y75.js";const c={},n={class:"p-6"};function i(l,s){return o(),a("div",n,[...s[0]||(s[0]=[e("h1",{class:"text-2xl font-display font-bold mb-4"},"Daftar Invoice",-1),e("div",{class:"card p-6"},[e("p",{class:"text-text-secondary"},"Invoice list will be implemented in Phase 13")],-1)])])}const d=t(c,[["render",i]]);export{d as default};

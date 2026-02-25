@@ -111,6 +111,11 @@ const router = createRouter({
           component: () => import('@/pages/keuangan/InvoiceListPage.vue')
         },
         {
+          path: 'keuangan/invoice/:id',
+          name: 'keuangan-invoice-detail',
+          component: () => import('@/pages/keuangan/InvoiceDetailPage.vue')
+        },
+        {
           path: 'keuangan/pembayaran',
           name: 'keuangan-pembayaran',
           component: () => import('@/pages/keuangan/PembayaranPage.vue')
