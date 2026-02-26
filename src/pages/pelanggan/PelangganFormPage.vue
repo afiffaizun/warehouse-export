@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useToastStore } from '@/stores/toast'
 import { ArrowLeft, Save } from 'lucide-vue-next'
 import type { BuyerFormData } from '@/types/pelanggan'
 import { countries, segments, paymentTerms, getBuyerById, mockBuyers } from '@/data/pelanggan'
 
 const router = useRouter()
 const route = useRoute()
+const toastStore = useToastStore()
 
 const isEditMode = computed(() => !!route.params.id)
 const pageTitle = computed(() => isEditMode.value ? 'Edit Pelanggan' : 'Tambah Pelanggan')
@@ -64,7 +66,7 @@ const goBack = () => {
 
 const handleSubmit = async () => {
   if (!formData.value.companyName || !formData.value.contactPerson || !formData.value.email) {
-    alert('Mohon lengkapi form yang wajib diisi')
+    toastStore.error('Mohon lengkapi form yang wajib diisi')
     return
   }
 
@@ -99,6 +101,7 @@ const handleSubmit = async () => {
       })
     }
     
+    toastStore.success(isEditMode.value ? 'Pelanggan berhasil diperbarui!' : 'Pengguna berhasil ditambahkan!')
     router.push({ name: 'pelanggan' })
   } catch (error) {
     console.error('Error saving buyer:', error)

@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToastStore } from '@/stores/toast'
 import { 
   Building,
   Warehouse,
   Globe,
   Bell,
-  Save
+  Save,
+  Plus,
+  UserCog,
+  Trash2,
+  Edit,
+  X,
+  Mail
 } from 'lucide-vue-next'
+
+const toastStore = useToastStore()
+import { mockUsers, roleOptions, statusOptions } from '@/data/pengguna'
+import type { User, UserFormData, UserRole, UserStatus } from '@/types/pengguna'
 
 const activeTab = ref('general')
 
@@ -14,7 +25,8 @@ const tabs = [
   { id: 'general', label: 'Umum', icon: Building },
   { id: 'warehouse', label: 'Gudang', icon: Warehouse },
   { id: 'export', label: 'Export', icon: Globe },
-  { id: 'notifications', label: 'Notifikasi', icon: Bell }
+  { id: 'notifications', label: 'Notifikasi', icon: Bell },
+  { id: 'users', label: 'Pengguna', icon: UserCog }
 ]
 
 const generalSettings = ref({
@@ -52,8 +64,132 @@ const notificationSettings = ref({
   shipmentUpdates: true
 })
 
+const users = ref<User[]>([...mockUsers])
+const showUserModal = ref(false)
+const editingUser = ref<User | null>(null)
+const showDeleteModal = ref(false)
+const deletingUserId = ref<number | null>(null)
+
+const userForm = ref<UserFormData>({
+  name: '',
+  email: '',
+  role: 'staff',
+  status: 'active',
+  phone: '',
+  department: '',
+  password: ''
+})
+
+const defaultUserForm: UserFormData = {
+  name: '',
+  email: '',
+  role: 'staff',
+  status: 'active',
+  phone: '',
+  department: '',
+  password: ''
+}
+
 const saveSettings = () => {
-  alert('Pengaturan berhasil disimpan!')
+  toastStore.success('Pengaturan berhasil disimpan!')
+}
+
+const openAddUserModal = () => {
+  editingUser.value = null
+  userForm.value = { ...defaultUserForm }
+  showUserModal.value = true
+}
+
+const openEditUserModal = (user: User) => {
+  editingUser.value = user
+  userForm.value = {
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+    phone: user.phone || '',
+    department: user.department || '',
+    password: ''
+  }
+  showUserModal.value = true
+}
+
+const closeUserModal = () => {
+  showUserModal.value = false
+  editingUser.value = null
+  userForm.value = { ...defaultUserForm }
+}
+
+const saveUser = () => {
+  if (!userForm.value.name || !userForm.value.email) {
+    toastStore.error('Nama dan email harus diisi!')
+    return
+  }
+
+  if (editingUser.value) {
+    const index = users.value.findIndex(u => u.id === editingUser.value!.id)
+    if (index !== -1) {
+      users.value[index] = {
+        ...users.value[index],
+        name: userForm.value.name,
+        email: userForm.value.email,
+        role: userForm.value.role,
+        status: userForm.value.status,
+        phone: userForm.value.phone || undefined,
+        department: userForm.value.department || undefined,
+        updatedAt: new Date().toISOString()
+      }
+    }
+    toastStore.success('Pengguna berhasil diperbarui!')
+  } else {
+    const newUser: User = {
+      id: Math.max(...users.value.map(u => u.id)) + 1,
+      name: userForm.value.name,
+      email: userForm.value.email,
+      role: userForm.value.role,
+      status: userForm.value.status,
+      phone: userForm.value.phone || undefined,
+      department: userForm.value.department || undefined,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+    users.value.push(newUser)
+    toastStore.success('Pengguna berhasil ditambahkan!')
+  }
+  closeUserModal()
+}
+
+const confirmDeleteUser = (id: number) => {
+  deletingUserId.value = id
+  showDeleteModal.value = true
+}
+
+const deleteUser = () => {
+  if (deletingUserId.value) {
+    users.value = users.value.filter(u => u.id !== deletingUserId.value)
+    toastStore.success('Pengguna berhasil dihapus!')
+  }
+  showDeleteModal.value = false
+  deletingUserId.value = null
+}
+
+const getRoleBadgeClass = (role: UserRole) => {
+  switch (role) {
+    case 'admin': return 'badge-danger'
+    case 'manager': return 'badge-warning'
+    case 'staff': return 'badge-primary'
+    case 'warehouse': return 'badge-secondary'
+    default: return 'badge-neutral'
+  }
+}
+
+const getStatusBadgeClass = (status: UserStatus) => {
+  switch (status) {
+    case 'active': return 'badge-success'
+    case 'inactive': return 'badge-neutral'
+    case 'suspended': return 'badge-danger'
+    default: return 'badge-neutral'
+  }
 }
 </script>
 
@@ -269,6 +405,179 @@ const saveSettings = () => {
               </label>
             </div>
           </div>
+        </div>
+
+        <!-- Users Settings -->
+        <div v-if="activeTab === 'users'" class="space-y-4">
+          <div class="card p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-semibold text-text-primary">Manajemen Pengguna</h2>
+                <p class="text-sm text-text-muted">Kelola pengguna sistem ({{ users.length }} pengguna)</p>
+              </div>
+              <button @click="openAddUserModal" class="btn-primary">
+                <Plus class="w-4 h-4" />
+                Tambah Pengguna
+              </button>
+            </div>
+          </div>
+
+          <div class="card overflow-hidden">
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="w-16">No</th>
+                    <th>Pengguna</th>
+                    <th>Role</th>
+                    <th>Departemen</th>
+                    <th>Status</th>
+                    <th class="w-32">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(user, index) in users" :key="user.id">
+                    <td class="font-mono text-sm text-text-muted">{{ index + 1 }}</td>
+                    <td>
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-accent-primary/10 flex items-center justify-center">
+                          <span class="text-sm font-medium text-accent-primary">{{ user.name.charAt(0) }}</span>
+                        </div>
+                        <div>
+                          <p class="font-medium text-text-primary">{{ user.name }}</p>
+                          <p class="text-sm text-text-muted flex items-center gap-1">
+                            <Mail class="w-3 h-3" />
+                            {{ user.email }}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span :class="['badge', getRoleBadgeClass(user.role)]">
+                        {{ roleOptions.find(r => r.value === user.role)?.label }}
+                      </span>
+                    </td>
+                    <td class="text-sm">{{ user.department || '-' }}</td>
+                    <td>
+                      <span :class="['badge', getStatusBadgeClass(user.status)]">
+                        {{ statusOptions.find(s => s.value === user.status)?.label }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="flex items-center gap-1">
+                        <button 
+                          @click="openEditUserModal(user)"
+                          class="btn-icon btn-ghost"
+                          title="Edit"
+                        >
+                          <Edit class="w-4 h-4" />
+                        </button>
+                        <button 
+                          @click="confirmDeleteUser(user.id)"
+                          class="btn-icon btn-ghost text-red-600 hover:bg-red-50"
+                          title="Hapus"
+                        >
+                          <Trash2 class="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Modal -->
+    <div v-if="showUserModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between p-4 border-b border-border">
+          <h3 class="text-lg font-semibold text-text-primary">
+            {{ editingUser ? 'Edit Pengguna' : 'Tambah Pengguna' }}
+          </h3>
+          <button @click="closeUserModal" class="btn-icon btn-ghost">
+            <X class="w-5 h-5" />
+          </button>
+        </div>
+        
+        <div class="p-4 space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-text-primary mb-1">
+              Nama Lengkap <span class="text-red-500">*</span>
+            </label>
+            <input v-model="userForm.name" type="text" class="input" placeholder="Masukkan nama lengkap" />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-text-primary mb-1">
+              Email <span class="text-red-500">*</span>
+            </label>
+            <input v-model="userForm.email" type="email" class="input" placeholder="email@example.com" />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-text-primary mb-1">
+              Password <span v-if="!editingUser" class="text-red-500">*</span>
+            </label>
+            <input v-model="userForm.password" type="password" class="input" :placeholder="editingUser ? 'Kosongkan jika tidak diubah' : 'Masukkan password'" />
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-text-primary mb-1">Role</label>
+              <select v-model="userForm.role" class="input">
+                <option v-for="role in roleOptions" :key="role.value" :value="role.value">
+                  {{ role.label }}
+                </option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-text-primary mb-1">Status</label>
+              <select v-model="userForm.status" class="input">
+                <option v-for="status in statusOptions" :key="status.value" :value="status.value">
+                  {{ status.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-text-primary mb-1">Telepon</label>
+            <input v-model="userForm.phone" type="text" class="input" placeholder="+62 812 3456 7890" />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-text-primary mb-1">Departemen</label>
+            <input v-model="userForm.department" type="text" class="input" placeholder="IT, Operations, Finance, dll" />
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-end gap-2 p-4 border-t border-border">
+          <button @click="closeUserModal" class="btn-outline">Batal</button>
+          <button @click="saveUser" class="btn-primary">
+            {{ editingUser ? 'Simpan Perubahan' : 'Tambah Pengguna' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-sm">
+        <div class="p-6 text-center">
+          <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+            <Trash2 class="w-6 h-6 text-red-600" />
+          </div>
+          <h3 class="text-lg font-semibold text-text-primary mb-2">Hapus Pengguna?</h3>
+          <p class="text-text-secondary">Apakah Anda yakin ingin menghapus pengguna ini? Tindakan ini tidak dapat dibatalkan.</p>
+        </div>
+        
+        <div class="flex items-center justify-end gap-2 p-4 border-t border-border">
+          <button @click="showDeleteModal = false" class="btn-outline">Batal</button>
+          <button @click="deleteUser" class="btn-danger">Hapus</button>
         </div>
       </div>
     </div>

@@ -2,9 +2,12 @@
 import { ref } from 'vue'
 import Sidebar from '@/components/layout/Sidebar.vue'
 import Header from '@/components/layout/Header.vue'
+import Toast from '@/components/ui/Toast.vue'
+import { useToastStore } from '@/stores/toast'
 
 const sidebarCollapsed = ref(false)
 const mobileMenuOpen = ref(false)
+const toastStore = useToastStore()
 
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value
@@ -44,6 +47,16 @@ const toggleMobileMenu = () => {
           </transition>
         </router-view>
       </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="fixed bottom-4 right-4 z-50 space-y-2 max-w-sm">
+      <Toast 
+        v-for="toast in toastStore.toasts" 
+        :key="toast.id" 
+        :toast="toast"
+        @close="toastStore.removeToast"
+      />
     </div>
   </div>
 </template>

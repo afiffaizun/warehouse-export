@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useToastStore } from '@/stores/toast'
 import { ArrowLeft, Save, Upload, X } from 'lucide-vue-next'
 import type { ProductFormData } from '@/types/barang'
 import { categories, statuses, units, getProductById, mockProducts } from '@/data/barang'
 
 const router = useRouter()
 const route = useRoute()
+const toastStore = useToastStore()
 
 const isEditMode = computed(() => !!route.params.id)
 const pageTitle = computed(() => isEditMode.value ? 'Edit Barang' : 'Tambah Barang')
@@ -66,7 +68,7 @@ const goBack = () => {
 
 const handleSubmit = async () => {
   if (!formData.value.name || !formData.value.sku || !formData.value.category) {
-    alert('Mohon lengkapi form yang wajib diisi')
+    toastStore.error('Mohon lengkapi form yang wajib diisi')
     return
   }
 
@@ -103,6 +105,7 @@ const handleSubmit = async () => {
       })
     }
     
+    toastStore.success(isEditMode.value ? 'Produk berhasil diperbarui!' : 'Produk berhasil ditambahkan!')
     router.push({ name: 'barang' })
   } catch (error) {
     console.error('Error saving product:', error)

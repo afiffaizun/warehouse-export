@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToastStore } from '@/stores/toast'
 import { ArrowLeft, Save, Package, Plus, Trash2 } from 'lucide-vue-next'
 import { mockProducts } from '@/data/barang'
 import { warehouses, mockStockItems, mockStockMutations } from '@/data/stok'
 import type { StockItem, StockMutation } from '@/types/stok'
 
 const router = useRouter()
+const toastStore = useToastStore()
 
 const isLoading = ref(false)
 const showSuccess = ref(false)
@@ -65,13 +67,13 @@ const goBack = () => {
 
 const handleSubmit = async () => {
   if (!form.value.warehouseId) {
-    alert('Mohon pilih gudang tujuan')
+    toastStore.error('Mohon pilih gudang tujuan')
     return
   }
 
   const validItems = form.value.items.filter(item => item.productId && item.quantity > 0)
   if (validItems.length === 0) {
-    alert('Mohon tambahkan minimal 1 item')
+    toastStore.error('Mohon tambahkan minimal 1 item')
     return
   }
 
@@ -127,6 +129,7 @@ const handleSubmit = async () => {
       }
     })
     
+    toastStore.success('Penerimaan stok berhasil disimpan!')
     showSuccess.value = true
     setTimeout(() => {
       router.push({ name: 'stok' })

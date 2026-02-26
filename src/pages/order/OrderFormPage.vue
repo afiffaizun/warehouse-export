@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToastStore } from '@/stores/toast'
 import { ArrowLeft, Save, Plus, Trash2 } from 'lucide-vue-next'
 import { incotermsList } from '@/data/order'
 import { mockBuyers } from '@/data/pelanggan'
@@ -8,6 +9,7 @@ import { mockProducts } from '@/data/barang'
 import { mockOrders } from '@/data/order'
 
 const router = useRouter()
+const toastStore = useToastStore()
 
 const isLoading = ref(false)
 
@@ -94,13 +96,13 @@ const goBack = () => {
 
 const handleSubmit = async () => {
   if (!form.value.buyerId) {
-    alert('Mohon pilih buyer')
+    toastStore.error('Mohon pilih buyer')
     return
   }
 
   const validItems = form.value.items.filter(item => item.productId && item.quantity > 0)
   if (validItems.length === 0) {
-    alert('Mohon tambahkan minimal 1 item')
+    toastStore.error('Mohon tambahkan minimal 1 item')
     return
   }
 
@@ -129,6 +131,7 @@ const handleSubmit = async () => {
       updatedAt: new Date().toISOString()
     })
     
+    toastStore.success('Order berhasil dibuat!')
     router.push({ name: 'order' })
   } catch (error) {
     console.error('Error saving order:', error)
