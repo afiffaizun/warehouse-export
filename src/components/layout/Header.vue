@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import {
   Search,
   Bell,
@@ -13,6 +14,7 @@ import {
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 
 const emit = defineEmits<{
   (e: 'toggle-sidebar'): void
@@ -76,6 +78,7 @@ const goToSettings = () => {
 
 const logout = () => {
   showUserMenu.value = false
+  authStore.logout()
   router.push({ name: 'login' })
 }
 

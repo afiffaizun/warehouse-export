@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import {
   LayoutDashboard,
   Package,
@@ -19,20 +20,9 @@ import {
   Menu
 } from 'lucide-vue-next'
 
-interface NavItem {
-  label: string
-  name: string
-  icon: any
-  children?: NavItem[]
-}
-
-interface NavGroup {
-  title: string
-  items: NavItem[]
-}
-
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 
 const isCollapsed = ref(false)
 const isMobileOpen = ref(false)
@@ -40,6 +30,17 @@ const isMobileOpen = ref(false)
 const emit = defineEmits<{
   (e: 'toggle-mobile'): void
 }>()
+
+interface NavItem {
+  label: string
+  name: string
+  icon: any
+}
+
+interface NavGroup {
+  title: string
+  items: NavItem[]
+}
 
 const navigationGroups: NavGroup[] = [
   {
@@ -106,6 +107,7 @@ const toggleMobile = () => {
 }
 
 const logout = () => {
+  authStore.logout()
   router.push({ name: 'login' })
 }
 </script>
